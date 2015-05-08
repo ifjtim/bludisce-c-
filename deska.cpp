@@ -2,9 +2,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iostream>
+#include <cstring>
+#include <stdlib.h> 
+#include "deska.h"
 
 using namespace std;
-
+/*
 // definice trid
 class Karta
 {
@@ -21,6 +25,8 @@ public:
     int porovnej(string znak);
     string zapis_kartu();
     int porovnej2(string znak);
+    int vratpozici();
+    string obsayenos();
     
     
 };
@@ -40,6 +46,8 @@ public:
     int vrat_pozici(string znak);
     string losuj_kartu(int pozice);
     int vrat_polohu(string znak);
+    int vrat_pozici(int i);
+    string vrat_osazenost(int i);
     
 };
 
@@ -69,6 +77,7 @@ public:
     void zapis_co(string coo);
     void zapis_kde(int kdee);
     void zapis_skore(int skoree);
+    
 
   
 };
@@ -78,7 +87,7 @@ class Policko
 private:
     string tvar;
     char vyznam;
-    int rotace;
+    int rotaci;
     
 public:
     Policko(string vzhled_policka,int rotace);     //vzhled_policka L,I,T
@@ -90,6 +99,8 @@ public:
     char vrat_policko(int pozice);
     void rozhibej_hrace(char hrac, int umisteni);
     void otoc_policko(int rotace);
+    char vrat_cotvar();
+    int vrat_rotace();
     
 };
 
@@ -102,6 +113,7 @@ private:
     
 public:
     Deska(int inpocet);
+    Deska(int inpocet, string tvary, string rotaci);
     //~Deska();
     int ziskej_pocet();
     void vykreslit();
@@ -112,7 +124,10 @@ public:
     void prekresli_policko(int pozice,int rotace);
     int ziskej_velikost();
     vector<Hrac> vsunot(int pocatek,int kolik,Balicek *karet,vector<Hrac> hraci);
-};
+    Policko ziskej_policko(int pozice);
+    char vrat_co(int pozice);
+    int vrat_rotaci(int pozici);
+};*/
 
 void rozdej_karty(Hrac *hrac, Balicek *co);
 
@@ -164,6 +179,19 @@ void rozdej_karty(Hrac *hrac, Balicek *co);
         return -1;
    }
    
+   int Balicek::vrat_pozici(int i){
+      return balicek_karet[i].vratpozici(); 
+        
+   }
+   
+    string Balicek::vrat_osazenost(int i){
+      return balicek_karet[i].obsayenos(); 
+        
+   }
+   
+   
+   
+   
     string Balicek::losuj_kartu(int pozice)
     {
         string neco="ne";
@@ -207,6 +235,16 @@ void rozdej_karty(Hrac *hrac, Balicek *co);
         else return -1;
     }
     
+    int Karta::vratpozici(){
+         return umisteni;
+       
+    }
+    
+    string Karta::obsayenos(){
+         return nalezeni;
+       
+    }
+    
     void Karta::vypis()
     {
         cout<< ukol<<" " ;
@@ -234,7 +272,23 @@ void rozdej_karty(Hrac *hrac, Balicek *co);
     
     
 //***************fukce deska***********************************************************************
- 
+ Deska::Deska(int inpocet, string tvary, string rotaci)
+ {
+     int cislo;
+     pocet=inpocet;
+     char neco1,neco2;
+     string achjo;
+     for(int i=0; i<=(inpocet*inpocet);i++){
+         neco1=rotaci[i];
+         neco2=tvary[i];
+          achjo="";
+         achjo.push_back(neco2);
+         cislo=int(neco1);
+         cislo=cislo-48;
+         cout<<achjo<<cislo<<endl;
+        hraci_plocha.push_back(Policko (achjo,cislo));
+     }
+ }
  
  Deska::Deska(int inpocet)
  {
@@ -399,6 +453,11 @@ int Deska::ziskej_velikost(){
  
      return hraci_plocha.size();
 }
+
+Policko Deska::ziskej_policko(int pozice){
+ 
+     return hraci_plocha[pozice];
+}
  
 /* Deska::~Deska()
  {
@@ -466,6 +525,16 @@ void Deska::hejbej_hrace(char hrac,int pozice, int umisteni){
 char Deska::vrat_tvarp(int pozice, int umisteni)
 {
    return hraci_plocha[pozice].vrat_policko(umisteni);
+}
+
+char Deska::vrat_co(int pozice)
+{
+   return hraci_plocha[pozice].vrat_cotvar();
+}
+
+int Deska::vrat_rotaci(int pozici)
+{
+  return hraci_plocha[pozici].vrat_rotace();  
 }
 void Deska::prekresli_policko(int pozice,int rotace)
 {
@@ -586,6 +655,7 @@ vector<Hrac> Deska::vsunot(int pocatek,int kolik,Balicek *karet,vector<Hrac> hra
   Policko::Policko(string vzhled_policka,int rotace)
  {
      vyznam=vzhled_policka[0];
+     rotaci=rotace;
    //string vzhled=str(vzhled_policka);
    if ("L"==vzhled_policka)
    {    
@@ -690,6 +760,10 @@ char Policko::vrat_policko(int pozice){
      return tvar[pozice];
 }
 
+char Policko::vrat_cotvar(){
+     return vyznam;
+}
+
 int Policko::uprav_karta(char predmet){
    // string volovina=str(tvar[4]);
    // char neco=tvar[4];
@@ -716,8 +790,15 @@ void Policko::rozhibej_hrace(char hrac, int umisteni){
     
 }
 
+int Policko::vrat_rotace(){
+ 
+    return rotaci;
+    
+}
+
 void Policko::otoc_policko(int rotace){
     char stre=tvar[4];
+    rotaci=rotace;
     string stred;
     stred.push_back(stre);
     //string stred(stre);
@@ -886,6 +967,66 @@ void Hrac::zapis_nacemstojim(char tvarek)
     nacemstojim=tvarek;
 }
 /***********funkce**********************************************************/
+void uloz_hru(Deska *hra,  Balicek *karet,vector<Hrac> hraci,string jmeno,int aktualnihrac){
+    
+    int pocet=hra->ziskej_pocet(),pocet_karet=karet->vrat_velikost(),pocet_hrac=hraci.size();
+    FILE *soubor;
+    string ano,vzhled;
+    char  nascem;
+    char *cstr = new char[jmeno.length() + 1];
+    strcpy(cstr, jmeno.c_str());
+
+    soubor = fopen(cstr, "w");
+    fprintf(soubor, "%d\n",pocet);
+    for(int i=0;i<=(pocet*pocet);i++){
+       fprintf(soubor, "%c",hra->vrat_co(i)); 
+        
+    }
+    fprintf(soubor, "\n"); 
+    
+    for(int i=0;i<=(pocet*pocet);i++){
+       fprintf(soubor, "%d",hra->vrat_rotaci(i)); 
+        
+    }
+    fprintf(soubor, "\n"); 
+     fprintf(soubor, "%d\n",pocet_karet);
+     
+     for(int i=0;i<=pocet_karet-1;i++)
+     {
+         fprintf(soubor, "%d ",karet->vrat_pozici(i));
+     }
+     fprintf(soubor, "\n"); 
+     for(int j=0;j<=pocet_karet-1;j++)
+     {
+         ano=karet->vrat_osazenost(j);
+         char *neco = new char[ano.length() + 1];
+            strcpy(neco, ano.c_str());
+        //cout<<ano<<endl;
+         fprintf(soubor, "%s ",neco);
+          
+         delete [] neco;
+     }
+     
+     fprintf(soubor, "\n");
+     fprintf(soubor, "%d\n",pocet_hrac);
+     for(int j=0;j<=pocet_hrac-1;j++){
+        vzhled=hraci[j].vrat_hrace();      
+        char *neco = new char[vzhled.length() + 1];
+        strcpy(neco, vzhled.c_str());
+        fprintf(soubor, "%s ",neco);
+        fprintf(soubor, "%d ",hraci[j].vrat_pozici());
+        fprintf(soubor, "%d ",hraci[j].vrat_umisteni());
+        nascem=hraci[j].vrat_nacemstojim();
+         fprintf(soubor, "%c ",nascem);
+            fprintf(soubor, "\n");   
+     }
+       fprintf(soubor, "%d",aktualnihrac);  
+fclose(soubor);
+delete [] cstr;    
+}
+
+
+
 void vloz_kartu(Deska *hra, Balicek *co){
     int opakovani,vrat_p=0, nahodne_umisteni=0,velikost=0;
     string ukarta;
@@ -900,6 +1041,7 @@ void vloz_kartu(Deska *hra, Balicek *co){
         ukarta=co->vrat_kartu(i);
         vrat_p=hra->vloz_premety(ukarta[0],nahodne_umisteni,velikost);
          co->zapispozici( i, vrat_p);
+         
         // cout<<"karta "<<ukarta[0]<<" "<<i<<" "<<vrat_p<<endl;
         
         
@@ -937,7 +1079,7 @@ void rozdej_karty(Hrac *hrac, Balicek *co){
 
 
 vector<Hrac> otoc(Deska *hra, int strana, int rada, int rotace, Balicek *karet,vector<Hrac> hraci){
-     int velikost,pocet;
+     int velikost,pocet,pomocny;
     // Policko pomocne;
    
     velikost=hra->ziskej_velikost();
@@ -954,23 +1096,30 @@ vector<Hrac> otoc(Deska *hra, int strana, int rada, int rotace, Balicek *karet,v
     else if(strana==2)
     {
         hra->prekresli_policko(velikost,rotace);
+       
+        rada=rada+1;
+        rada=rada*pocet;
+        rada=rada-1;
         hraci=hra->vsunot(rada,-1,karet,hraci);
     }
      else if(strana==3)
     {
+        pomocny=pocet;
         pocet=pocet-pocet-pocet;
         //cout<<"bugi"<<pocet<<endl;
+        pomocny=pomocny*(pomocny-1);
+        rada=pomocny+rada;
         hra->prekresli_policko(velikost,rotace);
         hraci=hra->vsunot(rada,pocet,karet,hraci);
     }
     
      else if(strana==4)
     {
-        
+        rada=rada*pocet;
         hra->prekresli_policko(velikost,rotace);
         hraci=hra->vsunot(rada,1,karet,hraci);
     }
-    karet->vypis_balicek();
+    //karet->vypis_balicek();
     
     return hraci;
 }
@@ -1348,57 +1497,122 @@ void pohyb(Deska *hra, Hrac *hrac,Balicek *karty,string znak){
 
 //******************************************************************************
 int main (void) {
-    int pocet,pocet_karet,pocet_hracu,j=0,rotace,vloz,rada,vyhra=0;
-    string znak;
+    int pocet,pocet_karet,pocet_hracu,j=0,rotace,vloz,rada,vyhra=0,porvykr=0;
+    string znak,nacist;
     vector<Hrac> hraci;
-    cout <<"zadej velikost hraci desky: ";
-    cin>>pocet;
-    cout <<"zadej pocet karet: ";
-    cin>>pocet_karet;
-    cout <<"zadej pocet hracu: ";
-    cin>>pocet_hracu;
-    vyhra=pocet_karet/pocet_hracu;
-  //Deska d(20,20,11);
-  //Deska d(20,20,9);
-  Deska d(pocet);
-  Balicek pocek(pocet_karet);
-  
-  vloz_kartu(&d, &pocek);
-  for(int i=1;i<=pocet_hracu;i++){
-  
-        if(i==1)
-        {
-           hraci.push_back(Hrac ("1",0,0));
-           rozmistit_hrace(&d, &hraci[0]);
-           rozdej_karty( &hraci[0], &pocek);
+    Deska *d;
+    Balicek *pocek;
+    Policko pomocne1("w",1),pomocne2("w",1),pomocne3("w",1),pomocne4("w",1);
+    cout <<"nacist hru ano ne: ";
+    cin>>nacist;
+    if(nacist=="ne")
+    {
+          FILE *soubor;
+    int num,pocet_ka;
+   char neco,pocet[3];
+   string covlastne,rotace;
+    soubor = fopen("soubor.txt", "r");
+    fscanf(soubor, "%d", &num);
+    cout<<num<<endl;
+    neco=fgetc(soubor);
+    cout<<"1"<<neco<<endl;
+    neco= fgetc (soubor);
+   do{
+       covlastne.push_back(neco);
+      neco= fgetc (soubor);
+      
+    }while (neco != '\n');
+    
+    cout<<covlastne<<endl;
+    
+     neco= fgetc (soubor);
+   do{
+       rotace.push_back(neco);
+      neco= fgetc (soubor);
+      
+    }while (neco != '\n');
+    
+    cout<<rotace<<endl;
+    //neco= fgetc (soubor);
+    pocet[0]= fgetc (soubor);
+     pocet[1]= fgetc (soubor);
+     pocet[2]= '\0';
+       pocet_ka = atoi (pocet);
+     cout<<pocet<<"dd"<<endl;
+     cout<< pocet_ka <<"dd"<<endl;
+    fclose(soubor);
+    d=new Deska(num,covlastne,rotace);
+    d->vykreslit();
+    
+    return 0;
+            
+    }
+    else
+    {
+            cout <<"zadej velikost hraci desky: ";
+             cin>>pocet;
+             if(pocet==5||pocet==7||pocet==9||pocet==11)
+                cout <<pocet_karet <<endl;
+            else pocet=7;
+            cout <<"zadej pocet karet: ";
+            cin>>pocet_karet;
+            if(pocet_karet==24||pocet_karet==12)
+                cout <<pocet<<endl;
+            else pocet_karet=12; 
+            cout <<"zadej pocet hracu: ";
+            cin>>pocet_hracu;
+            if(pocet_hracu==2||pocet_hracu==3||pocet_hracu==4)
+                cout <<pocet_hracu <<endl;
+            else pocet_hracu=2; 
+            vyhra=pocet_karet/pocet_hracu;
+        //vytvoreni desky
+        
+         d=new Deska(pocet);
+        //vytvoreni balicku
+        pocek=new Balicek(pocet_karet);
+        //vloyeni karet
+        vloz_kartu(d, pocek);
+        //inicialiyace hracu
+        for(int i=1;i<=pocet_hracu;i++){
+        
+                if(i==1)
+                {
+                hraci.push_back(Hrac ("1",0,0));
+                rozmistit_hrace(d, &hraci[0]);
+                rozdej_karty( &hraci[0], pocek);
+                }
+                
+                if(i==2)
+                {
+                hraci.push_back(Hrac ("2",pocet-1,0));
+                rozmistit_hrace(d, &hraci[1]);
+                rozdej_karty( &hraci[1], pocek);
+                }
+                
+                if(i==3)
+                {
+                hraci.push_back(Hrac ("3",pocet*pocet-pocet,0)); 
+                rozmistit_hrace(d, &hraci[2]);
+                rozdej_karty( &hraci[2], pocek);
+                }
+                
+                if(i==4)
+                {
+                hraci.push_back(Hrac ("4",pocet*pocet-1,0));
+                rozmistit_hrace(d, &hraci[3]);
+                rozdej_karty( &hraci[3], pocek);
+                }
+                
         }
         
-        if(i==2)
-        {
-           hraci.push_back(Hrac ("2",pocet-1,0));
-           rozmistit_hrace(&d, &hraci[1]);
-           rozdej_karty( &hraci[1], &pocek);
-        }
-        
-        if(i==3)
-        {
-           hraci.push_back(Hrac ("3",pocet*pocet-pocet,0)); 
-           rozmistit_hrace(&d, &hraci[2]);
-           rozdej_karty( &hraci[2], &pocek);
-        }
-         
-        if(i==4)
-        {
-           hraci.push_back(Hrac ("4",pocet*pocet-1,0));
-           rozmistit_hrace(&d, &hraci[3]);
-           rozdej_karty( &hraci[3], &pocek);
-        }
-        
-  }
+    }
+    
+    
+    
   
   cout<<"hledat predmet:"<<hraci[0].vrat_co()<<endl;
   cout<<"skore hrace: "<<hraci[0].vrat_skore()<<endl;
-  d.vykreslit();
+  d->vykreslit();
   while(znak!="q"){
       cin>>znak;
       
@@ -1406,39 +1620,76 @@ int main (void) {
       { 
          j++;
          if(j>hraci.size()-1) j=0;
-         cout<<"zadej rotaci"<<endl;
-         
+         porvykr=pocet*pocet;
+         pomocne1=d->ziskej_policko(porvykr);
+         pomocne2=d->ziskej_policko(porvykr);
+         pomocne3=d->ziskej_policko(porvykr);
+         pomocne4=d->ziskej_policko(porvykr);
+         cout<<"-0- -1- -2- -3 -"<<endl;
+         pomocne1.otoc_policko(0);
+         pomocne2.otoc_policko(1);
+         pomocne3.otoc_policko(2);
+         pomocne4.otoc_policko(3);
+         pomocne1.vypis1();
+         pomocne2.vypis1();
+         pomocne3.vypis1();
+         pomocne4.vypis1();
+         cout<<endl;
+         pomocne1.vypis2();
+         pomocne2.vypis2();
+         pomocne3.vypis2();
+         pomocne4.vypis2();
+         cout<<endl;
+         pomocne1.vypis3();
+         pomocne2.vypis3();
+         pomocne3.vypis3();
+         pomocne4.vypis3();
+         cout<<endl;
+         cout<<"zadej rotaci 0 1 2 3"<<endl;
          cin>>rotace;
+         if(rotace==0||rotace==1||rotace==2||rotace==3)
+             cout <<rotace<<endl;
+         else rotace=0;
          cout<<"zadej stranu1-4"<<endl;
          cin>>vloz;
+         if(vloz==4||vloz==1||vloz==2||vloz==3)
+             cout <<vloz<<endl;
+         else vloz=1;
          cout<<"zadej radu"<<endl;
          cin>>rada;
-         hraci=otoc(&d, vloz, rada, rotace,&pocek,hraci);
+         if(rada%2==0 &&rada>pocet){
+             
+             cout <<rada<<endl;
+             rada=rada-1;
+         }
+         else rada=1;
+         hraci=otoc(d, vloz, rada, rotace,pocek,hraci);
          
       }
       else if(znak=="w" || znak=="s" || znak=="a" ||znak=="d")
       {
-            pohyb(&d,&hraci[j],&pocek,znak);
+            pohyb(d,&hraci[j],pocek,znak);
       }
      
       cout<<"hledat predmet:"<<hraci[j].vrat_co()<<endl;
        cout<<"skore hrace: "<<hraci[j].vrat_skore()<<endl;
-      skotroluj(&hraci[j],&pocek);
+      skotroluj(&hraci[j],pocek);
       if(vyhra==hraci[j].vrat_skore())
       {
           znak="q";
          cout<<"vyhra"<<endl;
       }
-      //pocek.vypis_balicek();
-     d.vykreslit();
+      uloz_hru(d,pocek, hraci,"soubor.txt",j);
+      //pocek->vypis_balicek();
+     d->vykreslit();
   }
-  //pohyb(&d,hraci,&pocek);
-  //d.vykreslit();
-  //otoc(&d, 1, 1, 3);
-  //d.vykreslit();
+  //pohyb(d,hraci,pocek);
+  //d->vykreslit();
+  //otoc(d, 1, 1, 3);
+  //d->vykreslit();
   //Policko s("L",1);
   //s.vypis();
-  //d.zadej_sirka(50);
-  //d.ziskej_sirka();
+  //d->zadej_sirka(50);
+  //d->ziskej_sirka();
   return 0;
 }
