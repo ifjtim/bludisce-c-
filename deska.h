@@ -14,6 +14,7 @@ private:
     
 public:
     Karta(string jake);
+    Karta(string jake,string vlastnost,int inumisteni);
     void vypis();
     string vrat_predmet();
     void umistit(int pozice);
@@ -22,6 +23,7 @@ public:
     int porovnej2(string znak);
     int vratpozici();
     string obsayenos();
+    void prepis();
     
     
 };
@@ -34,6 +36,7 @@ private:
     
 public:
     Balicek(int pocet);
+    Balicek(int pocet,vector<int> pozi,vector<string> vlastnost);
     void vypis_balicek();
     int vrat_velikost();
     string vrat_kartu(int pozice);
@@ -43,6 +46,7 @@ public:
     int vrat_polohu(string znak);
     int vrat_pozici(int i);
     string vrat_osazenost(int i);
+    void uprav(int pozice);
     
 };
 
@@ -58,6 +62,7 @@ private:
     char nacemstojim;
 public:
     Hrac(string invzhled,int inpozice, int inskore);
+    Hrac(string invzhled,int inpozice,int inskore,int inumisteni,char innacemstojim,string hladani);
     string vrat_hrace();
     int vrat_pozici();
     void uprav_pozici(int upozice);
@@ -133,6 +138,8 @@ void rozmistit_hrace(Deska *hra, Hrac *hrac);
 inline void pohyb_prepis(Hrac *hrac,Deska *hra,  char vzhled,int pozice, int umisteni,char predtim);
 inline void pohyb_chyba(Hrac *hrac,Deska *hra,  char vzhled);
 void pohyb(Deska *hra, Hrac *hrac,Balicek *karty,string znak);
+vector<Hrac> nacist(Deska *d,  Balicek *pocek,vector<Hrac> hraci,string jmeno);
+void vloz_kartu2(Deska *hra, Balicek *co);
 
 
 

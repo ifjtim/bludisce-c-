@@ -147,6 +147,23 @@ void rozdej_karty(Hrac *hrac, Balicek *co);
         
     }
     
+     Balicek::Balicek(int pocet,vector<int> pozi,vector<string> vlastnost)
+    {
+        string ukol= "~!@#$%^&*()_+{}:<>?|\"qser";
+        string vul;
+        int pozic;
+        cout <<" c    sfeasdjfheauisgvdb  "<<pocet <<endl;
+        for(int i=0;i<=pocet-1;i++){
+           vul=ukol[i];
+           pozic=pozi[i]; 
+           cout<<  i<<vul<<pozic <<endl;
+        balicek_karet.push_back(Karta (vul,vlastnost[i],pozic));
+            
+        }
+        velikost=pocet;
+        
+    }
+    
     void Balicek::vypis_balicek()
     {
         for(int i =0 ;i<=balicek_karet.size()-1;i++){
@@ -181,6 +198,11 @@ void rozdej_karty(Hrac *hrac, Balicek *co);
    
    int Balicek::vrat_pozici(int i){
       return balicek_karet[i].vratpozici(); 
+        
+   }
+   
+   void Balicek::uprav(int pozice){
+       balicek_karet[pozice].prepis(); 
         
    }
    
@@ -225,6 +247,16 @@ void rozdej_karty(Hrac *hrac, Balicek *co);
         ukol=jake;
         nalezeni="ne";
     }
+    
+     Karta::Karta(string jake,string vlastnost,int inumisteni)
+    {
+        ukol=jake;
+        nalezeni=vlastnost;
+        umisteni=inumisteni;
+        cout<<ukol<<umisteni<<nalezeni<<endl;
+    }
+    
+    
     int Karta::porovnej(string znak){
         if(znak==ukol) return 1;
         else return -1;
@@ -253,6 +285,11 @@ void rozdej_karty(Hrac *hrac, Balicek *co);
     void Karta::umistit(int pozice){
      
         umisteni=pozice;
+    }
+    
+    void Karta::prepis(){
+    
+        nalezeni="ano";
     }
     
     string Karta::vrat_predmet()
@@ -893,6 +930,15 @@ Hrac::Hrac(string invzhled,int inpozice,int inskore){
     pozice=inpozice;
     skore=inskore;
 }
+
+Hrac::Hrac(string invzhled,int inpozice,int inskore,int inumisteni,char innacemstojim,string hladani){
+     umisteni=inumisteni;
+    vzhled=invzhled;
+    pozice=inpozice;
+    skore=inskore;
+    nacemstojim=innacemstojim;
+    co=hladani;
+}
 string Hrac::vrat_hrace()
 {
     return vzhled;
@@ -971,7 +1017,7 @@ void uloz_hru(Deska *hra,  Balicek *karet,vector<Hrac> hraci,string jmeno,int ak
     
     int pocet=hra->ziskej_pocet(),pocet_karet=karet->vrat_velikost(),pocet_hrac=hraci.size();
     FILE *soubor;
-    string ano,vzhled;
+    string ano,vzhled,hledani;
     char  nascem;
     char *cstr = new char[jmeno.length() + 1];
     strcpy(cstr, jmeno.c_str());
@@ -994,6 +1040,7 @@ void uloz_hru(Deska *hra,  Balicek *karet,vector<Hrac> hraci,string jmeno,int ak
      for(int i=0;i<=pocet_karet-1;i++)
      {
          fprintf(soubor, "%d ",karet->vrat_pozici(i));
+         cout<<karet->vrat_pozici(i)<<endl;
      }
      fprintf(soubor, "\n"); 
      for(int j=0;j<=pocet_karet-1;j++)
@@ -1016,8 +1063,12 @@ void uloz_hru(Deska *hra,  Balicek *karet,vector<Hrac> hraci,string jmeno,int ak
         fprintf(soubor, "%s ",neco);
         fprintf(soubor, "%d ",hraci[j].vrat_pozici());
         fprintf(soubor, "%d ",hraci[j].vrat_umisteni());
+        fprintf(soubor, "%d ",hraci[j].vrat_skore());
+        
         nascem=hraci[j].vrat_nacemstojim();
          fprintf(soubor, "%c ",nascem);
+         hledani=hraci[j].vrat_co();
+         fprintf(soubor, "%c ",hledani[0]);
             fprintf(soubor, "\n");   
      }
        fprintf(soubor, "%d",aktualnihrac);  
@@ -1047,6 +1098,21 @@ void vloz_kartu(Deska *hra, Balicek *co){
         
     }
 }
+
+void vloz_kartu2(Deska *hra, Balicek *co){
+    string ukarta;
+    int pos;
+    for (int i=0;i<=co->vrat_velikost()-1;i++){
+        ukarta=co->vrat_kartu(i);
+        pos=co->vrat_pozici(i);
+    hra->hejbej_hrace(ukarta[0],pos, 4);
+    //cout<<"karta "<<ukarta[0]<<" "<<i<<" "<<pos<<endl;
+         
+        // cout<<"karta "<<ukarta[0]<<" "<<i<<" "<<vrat_p<<endl;
+        
+        
+    }
+}
    
 void skotroluj(Hrac *hrac, Balicek *co){
     string hledany;
@@ -1059,6 +1125,7 @@ void skotroluj(Hrac *hrac, Balicek *co){
         //cout<<"bing"<<endl;
         hrac->zapis_skore(1);
         rozdej_karty(hrac,co);
+        co->uprav(pozice_hledaneho);
         
     }
     //cout<<ukarta<<endl;
@@ -1507,44 +1574,136 @@ int main (void) {
     cin>>nacist;
     if(nacist=="ne")
     {
-          FILE *soubor;
-    int num,pocet_ka;
-   char neco,pocet[3];
-   string covlastne,rotace;
-    soubor = fopen("soubor.txt", "r");
-    fscanf(soubor, "%d", &num);
-    cout<<num<<endl;
-    neco=fgetc(soubor);
-    cout<<"1"<<neco<<endl;
-    neco= fgetc (soubor);
-   do{
-       covlastne.push_back(neco);
-      neco= fgetc (soubor);
-      
-    }while (neco != '\n');
+                    FILE *soubor;
+                int num,pocet_ka,ci=0,pozicc,pocet_h=0,pos_h=0,umis_h=0,skore_h=0;
+            char neco,pocett[3],umisteni_karet[10],hrac[4];
+            string covlastne,rotace,anone,vzhled_h,stol,hladani;
+            vector<int> pozi;
+            vector<string> vlastnost;
+                soubor = fopen("soubor.txt", "r");
+                fscanf(soubor, "%d", &num);
+                pocet=num;
+                cout<<num<<endl;
+                neco=fgetc(soubor);
+                cout<<"1"<<neco<<endl;
+                neco= fgetc (soubor);
+            do{
+                covlastne.push_back(neco);
+                neco= fgetc (soubor);
+                
+                }while (neco != '\n');
+                
+                cout<<covlastne<<endl;
+                
+                neco= fgetc (soubor);
+            do{
+                rotace.push_back(neco);
+                neco= fgetc (soubor);
+                
+                }while (neco != '\n');
+                
+                cout<<rotace<<endl;
+                //neco= fgetc (soubor);
+                pocett[0]= fgetc (soubor);
+                pocett[1]= fgetc (soubor);
+                pocett[2]= '\0';
+                pocet_ka = atoi (pocett);
+                cout<<pocett<<"dd"<<endl;
+                cout<< pocet_ka <<"dd"<<endl;
+                neco= fgetc (soubor);
+                neco= fgetc (soubor);
+                for(int i=0;i<=pocet_ka-1;i++)
+                {
+                    
+                    do{
+                    umisteni_karet[ci]= neco;
+                // cout<<neco<<endl;
+                    neco= fgetc (soubor);
+                    ci++;
+                    
+                    }while (neco != '\n' && neco !=' ');
+                    umisteni_karet[ci]='\0';
+                    ci=0;
+                    pozicc= atoi (umisteni_karet);
+                    pozi.push_back(pozicc);
+                    cout<<umisteni_karet<<"umi"<<endl;
+                }
+                neco= fgetc (soubor);
+                neco= fgetc (soubor);
+                for(int i=0;i<=pocet_ka-1;i++)
+                {
+                    
+                    do{
+                    
+                // cout<<neco<<endl;
+                    anone.push_back(neco);
+                neco= fgetc (soubor);
+                    
+                    }while (neco != '\n' && neco !=' ');
+                    
+                    vlastnost.push_back(anone);
+                    neco= fgetc (soubor);
+                    cout<<"umi"<<anone<<"umi"<<endl;
+                    anone="";
+                }
+                
+                d=new Deska(num,covlastne,rotace);
+                pocek=new Balicek(pocet_ka,pozi, vlastnost);
+                    //vloyeni karet
+                vloz_kartu2(d, pocek);
+                
+                /*hraci.push_back(Hrac ("4",pocet*pocet-1,0));
+                            rozmistit_hrace(d, &hraci[3]);
+                            rozdej_karty( &hraci[3], pocek);*/
+                // neco= fgetc (soubor);
+                    neco= fgetc (soubor);
+                    cout<<neco<<"cislo_hracu"<<endl;
+                    pocet_h=int(neco);
+                    pocet_h=pocet_h-48;
+                    neco= fgetc (soubor);
+                    cout<<neco<<" xhv"<<endl;
+                    pocet_hracu=pocet_h;
+                    pocet_karet=pocet_ka;
+                for(int i=0;i<=pocet_h-1;i++)
+                {
+                    for(int j=0;j<=pocet_h+1;j++)
+                    {
+                            ci=0;
+                            do{
+                        
+                                neco= fgetc (soubor);
+                                hrac[ci]=neco;
+                            ci++;
+                            }while (neco != '\n' && neco !=' ');
+                            hrac[ci-1]='\0';
+                            if(j==0)vzhled_h=hrac;
+                            if(j==1)pos_h = atoi(hrac);
+                                
+                            if(j==2)umis_h=atoi(hrac);
+                            if(j==3)skore_h=atoi(hrac);
+                            if(j==4)stol=hrac;
+                            if(j==5)hladani=hrac;
+                            //cout<<hrac<<"xhrav"<<endl;
+                            
+                        
+                    }
+                    neco= fgetc (soubor);
+                    cout<<vzhled_h<<" "<<pos_h<<"  "<<umis_h<<" "<<skore_h<<" "<<stol<<"hh"<<endl;
+                    hraci.push_back(Hrac (vzhled_h,pos_h,skore_h,umis_h,stol[0],hladani)); 
+                            d->hejbej_hrace(vzhled_h[0],pos_h,umis_h);
+                            //rozdej_karty( &hraci[i], pocek);
+                }
+                
+                neco= fgetc (soubor);
+                //neco= fgetc (soubor);
+                j=int(neco);
+                j=j-48;
+                
+                    cout<<j<<"cislo_hracu"<<endl;
+                fclose(soubor);
+                d->vykreslit();
     
-    cout<<covlastne<<endl;
     
-     neco= fgetc (soubor);
-   do{
-       rotace.push_back(neco);
-      neco= fgetc (soubor);
-      
-    }while (neco != '\n');
-    
-    cout<<rotace<<endl;
-    //neco= fgetc (soubor);
-    pocet[0]= fgetc (soubor);
-     pocet[1]= fgetc (soubor);
-     pocet[2]= '\0';
-       pocet_ka = atoi (pocet);
-     cout<<pocet<<"dd"<<endl;
-     cout<< pocet_ka <<"dd"<<endl;
-    fclose(soubor);
-    d=new Deska(num,covlastne,rotace);
-    d->vykreslit();
-    
-    return 0;
             
     }
     else
@@ -1552,7 +1711,7 @@ int main (void) {
             cout <<"zadej velikost hraci desky: ";
              cin>>pocet;
              if(pocet==5||pocet==7||pocet==9||pocet==11)
-                cout <<pocet_karet <<endl;
+                cout <<pocet <<endl;
             else pocet=7;
             cout <<"zadej pocet karet: ";
             cin>>pocet_karet;
@@ -1564,7 +1723,7 @@ int main (void) {
             if(pocet_hracu==2||pocet_hracu==3||pocet_hracu==4)
                 cout <<pocet_hracu <<endl;
             else pocet_hracu=2; 
-            vyhra=pocet_karet/pocet_hracu;
+           
         //vytvoreni desky
         
          d=new Deska(pocet);
@@ -1612,6 +1771,7 @@ int main (void) {
   
   cout<<"hledat predmet:"<<hraci[0].vrat_co()<<endl;
   cout<<"skore hrace: "<<hraci[0].vrat_skore()<<endl;
+   vyhra=pocet_karet/pocet_hracu;
   d->vykreslit();
   while(znak!="q"){
       cin>>znak;
@@ -1657,7 +1817,7 @@ int main (void) {
          else vloz=1;
          cout<<"zadej radu"<<endl;
          cin>>rada;
-         if(rada%2==0 &&rada>pocet){
+         if(rada%2==0 &&rada<pocet){
              
              cout <<rada<<endl;
              rada=rada-1;
