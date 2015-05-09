@@ -1,4 +1,11 @@
 #ifndef deska_H
+/**
+ * Labirint 2015
+ *
+ * @author Tomasz Konderla xkonde03
+ * @author Pavel Červený xcerve15
+ */
+
 #define deska_H
 using namespace std;
    // tady bude kod hlavickoveho souboru
