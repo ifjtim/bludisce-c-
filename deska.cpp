@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstring>
 #include <stdlib.h> 
+#include <ctime>
 #include "deska.h"
 
 using namespace std;
