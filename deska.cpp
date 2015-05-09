@@ -1921,7 +1921,7 @@ int main (void) {
                 
                
                         FILE *soubor;
-                                int num,pocet_ka,ci=0,pozicc,pocet_h=0,pos_h=0,umis_h=0,skore_h=0;
+                                int num,pocet_ka,ci=0,pozicc,pocet_h=0,pos_h=0,umis_h=0,skore_h=0,vypoce=0;
                             char neco,pocett[3],umisteni_karet[10],hrac[4];
                             string covlastne,rotace,anone,vzhled_h,stol,hladani;
                             vector<int> pozi;
@@ -1984,9 +1984,11 @@ int main (void) {
                                 pocett[1]= fgetc (soubor);
                                 pocett[2]= '\0';
                                 pocet_ka = atoi (pocett);
+                                prepast.push_back(pocett[0]);
+                                 prepast.push_back(pocett[1]);
                                 //cout<<pocett<<"dd"<<endl;
                                 //cout<< pocet_ka <<"dd"<<endl;
-                                neco= fgetc (soubor);
+                                neco= fgetc (soubor);prepast.push_back(neco);
                                 neco= fgetc (soubor);prepast.push_back(neco);
                                 for(int i=0;i<=pocet_ka-1;i++)
                                 {
@@ -2078,19 +2080,30 @@ int main (void) {
                                 //neco= fgetc (soubor);prepast.push_back(neco);
                                 tah=int(neco);
                                 tah=tah-48;
-                                
+                                vypoce=jogo;
                                     //cout<<j<<"cislo_hracu"<<endl;
                                 
                               //  d->vykreslit();
           }
           cout<<prepast<<endl;  
-//           fclose(soubor);
-//           for(int jogo=1;jogo<=kroky;jogo++){
+           fclose(soubor);
+           int vypocet=prepast.size()/vypoce;
+           vypocet=prepast.size()-vypocet;
+           string kravina;
+          for(int jo=0;jo<=vypocet-1;jo++){
 //               soubor = fopen("autosave.txt", "r");
 //                neco= fgetc (soubor);prepast.push_back(neco);
-//               prepast.push_back(neco);
+             kravina.push_back(prepast[jo]);
 //                fclose(soubor);
-//           }
+          }
+          char *shoj = new char[kravina.length() + 1];
+            strcpy(shoj, kravina.c_str());
+            soubor = fopen("autosave.txt", "w");
+            fprintf(soubor, "%s ",shoj);
+            fclose(soubor);
+            delete []shoj;
+          cout<<"/*************************************************"<<endl;
+          cout<<kravina<<endl;
 //           for(int jogo=1;jogo<=kroky;jogo++){
 //               soubor = fopen("autosave.txt", "r");
 //                neco= fgetc (soubor);prepast.push_back(neco);
