@@ -1028,6 +1028,10 @@ void uloz_hru(Deska *hra,  Balicek *karet,vector<Hrac> hraci,string jmeno,int ak
     strcpy(cstr, jmeno.c_str());
 
     soubor = fopen(cstr, "w");
+    if(soubor==NULL) {
+                 cout<<"chybny   soubor"<<endl;
+                 return ;
+                }
     fprintf(soubor, "%d\n",pocet);
     for(int i=0;i<=(pocet*pocet);i++){
        fprintf(soubor, "%c",hra->vrat_co(i)); 
@@ -1045,7 +1049,7 @@ void uloz_hru(Deska *hra,  Balicek *karet,vector<Hrac> hraci,string jmeno,int ak
      for(int i=0;i<=pocet_karet-1;i++)
      {
          fprintf(soubor, "%d ",karet->vrat_pozici(i));
-         cout<<karet->vrat_pozici(i)<<endl;
+         //cout<<karet->vrat_pozici(i)<<endl;
      }
      fprintf(soubor, "\n"); 
      for(int j=0;j<=pocet_karet-1;j++)
@@ -1108,7 +1112,7 @@ void uloz_hru_autosave(Deska *hra,  Balicek *karet,vector<Hrac> hraci,string jme
      for(int i=0;i<=pocet_karet-1;i++)
      {
          fprintf(soubor, "%d ",karet->vrat_pozici(i));
-         cout<<karet->vrat_pozici(i)<<endl;
+         //cout<<karet->vrat_pozici(i)<<endl;
      }
      fprintf(soubor, "\n"); 
      for(int j=0;j<=pocet_karet-1;j++)
@@ -1860,60 +1864,8 @@ int main (void) {
       
       cin>>znak;
       
-      if(znak=="e")
-      { 
-          kroky++;
-         tah++;
-         if(tah>hraci.size()-1) tah=0;
-         uloz_hru_autosave(d,pocek, hraci,"a",tah);
-         porvykr=pocet*pocet;
-         pomocne1=d->ziskej_policko(porvykr);
-         pomocne2=d->ziskej_policko(porvykr);
-         pomocne3=d->ziskej_policko(porvykr);
-         pomocne4=d->ziskej_policko(porvykr);
-         cout<<"-0- -1- -2- -3 -"<<endl;
-         pomocne1.otoc_policko(0);
-         pomocne2.otoc_policko(1);
-         pomocne3.otoc_policko(2);
-         pomocne4.otoc_policko(3);
-         pomocne1.vypis1();
-         pomocne2.vypis1();
-         pomocne3.vypis1();
-         pomocne4.vypis1();
-         cout<<endl;
-         pomocne1.vypis2();
-         pomocne2.vypis2();
-         pomocne3.vypis2();
-         pomocne4.vypis2();
-         cout<<endl;
-         pomocne1.vypis3();
-         pomocne2.vypis3();
-         pomocne3.vypis3();
-         pomocne4.vypis3();
-         cout<<endl;
-         cout<<"zadej rotaci 0 1 2 3"<<endl;
-         cin>>rotace;
-         if(rotace==0||rotace==1||rotace==2||rotace==3)
-             cout <<rotace<<endl;
-         else rotace=0;
-         cout<<"zadej stranu1-4"<<endl;
-         cin>>vloz;
-         if(vloz==4||vloz==1||vloz==2||vloz==3)
-             cout <<vloz<<endl;
-         else vloz=1;
-         cout<<"zadej radu"<<endl;
-         cin>>rada;
-         if(rada%2==0 &&rada<pocet){
-             
-             cout <<rada<<endl;
-             rada=rada-1;
-         }
-         else rada=1;
-         hraci=otoc(d, vloz, rada, rotace,pocek,hraci);
-         
-      }
       
-       else if(znak=="z" )
+      if(znak=="z" )
       {
           //cout<<kroky<<endl;
           
@@ -2091,10 +2043,9 @@ int main (void) {
            vypocet=prepast.size()-vypocet;
            string kravina;
           for(int jo=0;jo<=vypocet-1;jo++){
-//               soubor = fopen("autosave.txt", "r");
-//                neco= fgetc (soubor);prepast.push_back(neco);
+
              kravina.push_back(prepast[jo]);
-//                fclose(soubor);
+
           }
           char *shoj = new char[kravina.length() + 1];
             strcpy(shoj, kravina.c_str());
@@ -2102,19 +2053,67 @@ int main (void) {
             fprintf(soubor, "%s ",shoj);
             fclose(soubor);
             delete []shoj;
-          cout<<"/*************************************************"<<endl;
-          cout<<kravina<<endl;
-//           for(int jogo=1;jogo<=kroky;jogo++){
-//               soubor = fopen("autosave.txt", "r");
-//                neco= fgetc (soubor);prepast.push_back(neco);
-//               prepast.push_back(neco);
-//                fclose(soubor);
-//           }
+          
           kroky--;
           if(kroky==0)kroky=1;
             continue;
    
       }
+      
+       else if(znak=="e")
+      { 
+          kroky++;
+         tah++;
+         if(tah>hraci.size()-1) tah=0;
+         uloz_hru_autosave(d,pocek, hraci,"a",tah);
+         porvykr=pocet*pocet;
+         pomocne1=d->ziskej_policko(porvykr);
+         pomocne2=d->ziskej_policko(porvykr);
+         pomocne3=d->ziskej_policko(porvykr);
+         pomocne4=d->ziskej_policko(porvykr);
+         cout<<"-0- -1- -2- -3 -"<<endl;
+         pomocne1.otoc_policko(0);
+         pomocne2.otoc_policko(1);
+         pomocne3.otoc_policko(2);
+         pomocne4.otoc_policko(3);
+         pomocne1.vypis1();
+         pomocne2.vypis1();
+         pomocne3.vypis1();
+         pomocne4.vypis1();
+         cout<<endl;
+         pomocne1.vypis2();
+         pomocne2.vypis2();
+         pomocne3.vypis2();
+         pomocne4.vypis2();
+         cout<<endl;
+         pomocne1.vypis3();
+         pomocne2.vypis3();
+         pomocne3.vypis3();
+         pomocne4.vypis3();
+         cout<<endl;
+         cout<<"zadej rotaci 0 1 2 3"<<endl;
+         cin>>rotace;
+         if(rotace==0||rotace==1||rotace==2||rotace==3)
+             cout <<rotace<<endl;
+         else rotace=0;
+         cout<<"zadej stranu1-4"<<endl;
+         cin>>vloz;
+         if(vloz==4||vloz==1||vloz==2||vloz==3)
+             cout <<vloz<<endl;
+         else vloz=1;
+         cout<<"zadej radu"<<endl;
+         cin>>rada;
+         if(rada%2==0 &&rada<pocet){
+             
+             cout <<rada<<endl;
+             rada=rada-1;
+         }
+         else rada=1;
+         hraci=otoc(d, vloz, rada, rotace,pocek,hraci);
+         
+      }
+      
+      
       
       
       
