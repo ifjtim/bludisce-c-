@@ -17,13 +17,13 @@ SOURCES += main.cpp\
     gamesetup.cpp \
     labyrint.cpp \
     myrect.cpp \
-    ../src/deska.cpp
+    ../deska.cpp
 
 HEADERS  += mainwindow.h \
     gamesetup.h \
     labyrint.h \
     myrect.h \
-    ../src/deska.h
+    ../deska.h
 
 FORMS    += mainwindow.ui \
     gamesetup.ui \

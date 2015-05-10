@@ -20,7 +20,7 @@
 
 #include "labyrint.h"
 #include "gamesetup.h"
-#include "../src/deska.h"
+#include "../deska.h"
 
 /**
  * @brief Trida Labyrint

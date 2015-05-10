@@ -24,7 +24,7 @@
 #include <QLineEdit>
 #include <QInputDialog>
 #include <QDir>
-#include "../src/deska.h"
+#include "../deska.h"
 
 
 namespace Ui {
