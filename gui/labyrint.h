@@ -10,7 +10,7 @@
 #ifndef LABYRINT_H
 #define LABYRINT_H
 
-#include <QWidget>
+#include <QtWidgets/QMainWindow>
 #include <QLabel>
 #include <QPushButton>
 #include <QMainWindow>
