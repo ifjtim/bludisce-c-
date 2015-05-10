@@ -147,6 +147,7 @@ inline void pohyb_chyba(Hrac *hrac,Deska *hra,  char vzhled);
 void pohyb(Deska *hra, Hrac *hrac,Balicek *karty,string znak);
 vector<Hrac> nacist(Deska *d,  Balicek *pocek,vector<Hrac> hraci,string jmeno);
 void vloz_kartu2(Deska *hra, Balicek *co);
+void uloz_hru_autosave(Deska *hra,  Balicek *karet,vector<Hrac> hraci,string jmeno,int aktualnihrac);
 
 
 
