@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/arrow_down.png</file>
+        <file>images/arrow_left.png</file>
+        <file>images/arrow_right.png</file>
+        <file>images/arrow_up.png</file>
+        <file>images/block.png</file>
+        <file>images/cloud.png</file>
+        <file>images/cog.png</file>
+        <file>images/compass.png</file>
+        <file>images/dribbble.png</file>
+        <file>images/drop.png</file>
+        <file>images/eject.png</file>
+        <file>images/fast_forward.png</file>
+        <file>images/globe.png</file>
+        <file>images/graph_rise.png</file>
+        <file>images/hall.png</file>
+        <file>images/hashtag.png</file>
+        <file>images/heart.png</file>
+        <file>images/hrac1.png</file>
+        <file>images/hrac2.png</file>
+        <file>images/hrac3.png</file>
+        <file>images/hrac4.png</file>
+        <file>images/location.png</file>
+        <file>images/lock.png</file>
+        <file>images/mail.png</file>
+        <file>images/map.png</file>
+        <file>images/more_2.png</file>
+        <file>images/moustache.png</file>
+        <file>images/music.png</file>
+        <file>images/pause.png</file>
+        <file>images/pen_1.png</file>
+        <file>images/pie_chart.png</file>
+        <file>images/pill.png</file>
+        <file>images/plug.png</file>
+        <file>images/power.png</file>
+        <file>images/predmet.png</file>
+        <file>images/wall.png</file>
+    </qresource>
+</RCC>
