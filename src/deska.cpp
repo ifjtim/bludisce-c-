@@ -21,7 +21,7 @@ using namespace std;
 
 //*****************fukce balicek *********************************************************************
     /**
-    * konstrukter Balicku karet pošle se počet karet
+    * konstruktor Balicku karet pošle se počet karet
     *
     * @param pocet je počet karet v baličku
     * 
@@ -40,7 +40,7 @@ using namespace std;
     }
     
     /**
-    * konstrukter2 Balicku složi pri načutani baličku z uložene hry
+    * druhy konstruktor Balicku složi pri nacitani baličku z uložene hry
     *
     * @param pocet je počet karet v baličku
     * @param pozi jsou souřadnice karet na hraci desce
@@ -90,7 +90,7 @@ using namespace std;
     }
     
     /**
-    * prepise pozici karty na hraci plose poouze interni informaci co má karta
+    * prepise pozici karty na hraci plose pouze interni informaci co má karta
     *
     * @param pozice pozice dane karty ve vektoru
     * @param pozice pozice na hraci desce
@@ -120,7 +120,7 @@ using namespace std;
     
     int Balicek::vrat_pozici(string znak){
         int kontrola=0;
-        for(int i =0 ;i<=balicek_karet.size()-1;i++){ //projede celi baliček karet
+        for(int i =0 ;i<=balicek_karet.size()-1;i++){ //projede cely baliček karet
         
             kontrola=balicek_karet[i].porovnej(znak); 
             if(kontrola==1)return i;                  //pokud je dana karta hledana vrati jedna
@@ -140,7 +140,7 @@ using namespace std;
     }
    
     /**
-    * přepiše že dana karta je už obsazena
+    * přepiše že dana karta jeli už obsazena
     *
     * @param pozice pozice karty
     * 
@@ -152,7 +152,7 @@ using namespace std;
     }
     
     /**
-    * vraci obsazensot kraty ano-ne
+    * vraci obsazenost karty ano-ne
     *
     * @param i pozice karty
     * 
@@ -241,7 +241,7 @@ using namespace std;
     }
     
      /**
-    * vraci jestli karta je hledanou
+    * vraci, jestli karta je hledanou
     *
     * @param znak vzhled karty 
     * 
@@ -265,7 +265,7 @@ using namespace std;
     }
     
      /**
-    * vraci jestli umisteni karty na hraci desce
+    * vraci pozici umisteni karty na hraci desce
     * 
     */
     
@@ -296,9 +296,9 @@ using namespace std;
     }
     
      /**
-    * vraci  umisteni karty na hraci desce
+    * vraci umisteni karty na hraci desce
     *
-    * @param pozice pizice ve vektoru
+    * @param pozice pozice ve vektoru
     * 
     */
     
@@ -342,9 +342,9 @@ using namespace std;
     
 //***************fukce deska***********************************************************************
  /**
-    * konstruktor hraci desky pri nahravanai
+    * konstruktor hraci desky pri nahravani
     *
-    * @param inpocet velikos hraci desky
+    * @param inpocet velikost hraci desky
     *  @param tvary string pismenek tvaru
     *  @param inpocet string rotaci
     * 
@@ -370,7 +370,7 @@ using namespace std;
  /**
     * konstruktor hraci desky
     *
-    * @param inpocet velikos hraci desky
+    * @param inpocet velikost hraci desky
     * 
     */
  Deska::Deska(int inpocet)
@@ -529,7 +529,7 @@ using namespace std;
  }
  
  /**
-    * vraci velikost harci desky
+    * vraci velikost hraci desky
     * 
     */
  
@@ -539,7 +539,7 @@ using namespace std;
  }
  
   /**
-    * vraci velikost vektoru harci desky
+    * vraci velikost vektoru hraci desky
     * 
     */
  
@@ -590,8 +590,8 @@ using namespace std;
   /**
     * vloži nahodně předměty do hraci desky
     *
-    * @param predmet tvar hledane předmětu
-    *  @param pozice random poyice
+    * @param predmet tvar hledaneho předmětu
+    *  @param pozice nahodna pozice
     *  @param max maximalni velikost pole
     * 
     */
@@ -600,7 +600,7 @@ using namespace std;
     //cout<<predmet<<endl;
     int kontrola=0;
     while(kontrola!=1){
-       kontrola= hraci_plocha[pozice].uprav_karta(predmet); //vraci jedna když všecjno ok jestli tam je už předmět vraci -1
+       kontrola= hraci_plocha[pozice].uprav_karta(predmet); //vraci jedna když vsechno v poradku, jestli tam je už předmět vraci -1
        if(kontrola==1)break;
        pozice++;
        if(pozice==max)
@@ -638,7 +638,7 @@ using namespace std;
  }
  
  /**
-    * varti určity kus polička
+    * vrati určity kus polička
     * @param pozice ve vektoru poliček pozice
     * @param umisteni umisteni v poličku
     * 
@@ -650,7 +650,7 @@ using namespace std;
  }
 
  /**
-    * varti vrati co se nachazi na středu polička
+    * vrati co se nachazi ve středu polička
     * @param pozice ve vektoru poliček pozice
     * 
     */
@@ -673,9 +673,9 @@ using namespace std;
  }
  
  /**
-    * z rotuje poličko ve vektoru
+    *zrotuje poličko ve vektoru
     *
-    *@param pozici pozice polička ve vektoru
+    *@param pozice pozice polička ve vektoru
     * @param rotace polička
     * 
     */
@@ -876,7 +876,7 @@ using namespace std;
     
     
 /**
-    * vypise horni řad polička
+    * vypise horni řadu poliček
     * */
     
  void Policko::vypis1(){
@@ -884,7 +884,7 @@ using namespace std;
  }
  
  /**
-    * středni řad polička
+    * středni řadu poliček
     * */
  
  void Policko::vypis2(){
@@ -892,7 +892,7 @@ using namespace std;
  }
  
  /**
-    * dolni řad polička
+    * dolni řadu poliček
     * */
  
  void Policko::vypis3(){
@@ -909,7 +909,7 @@ using namespace std;
  }
  
  /**
-    * vrati jaky druh je to poličko L-I-T
+    * vrati jaky je druh policka L-I-T
     *
     * */
 
@@ -961,7 +961,7 @@ using namespace std;
 
   /**
     * zrotuje poličko
-    * @param rotace rotane polička
+    * @param rotace rotace polička
     * */
   
   void Policko::otoc_policko(int rotace){
@@ -1070,7 +1070,7 @@ Hrac::Hrac(string invzhled,int inpozice,int inskore){
 
 /**
     * konstruktor hrače pro načteni hry
-    * @param invzhled vkladanyhrač
+    * @param invzhled vkladany hrač
     * @param inpozice pozice hrače
     * @param inskore skore hrače
     * @param innacemstojim načem stal
@@ -1499,7 +1499,7 @@ vector<Hrac> otoc(Deska *hra, int strana, int rada, int rotace, Balicek *karet,v
 }
 
 /**
-    * rozmisti hrače po poli
+    * rozmisti hrače na desce
     * @param hra herni deska
     * @param hrac konkretni hrač
     * */
@@ -1519,7 +1519,7 @@ void rozmistit_hrace(Deska *hra, Hrac *hrac){
 }
  
  
-//posna fukce pohybu
+//pomocna fukce pohybu
 inline void pohyb_prepis(Hrac *hrac,Deska *hra,  char vzhled,int pozice, int umisteni,char predtim){
                     hrac->zapis_nacemstojim(predtim);
                     hrac->uprav_pozici(pozice);
@@ -1539,7 +1539,7 @@ inline void pohyb_chyba(Hrac *hrac,Deska *hra,  char vzhled){
                     
 }
 /**
-    * zajiščuje pohyb hraču po hraci desce
+    * zajistuje pohyb hraču po hraci desce
     * @param hra hraci deska
     * @param hrac konkretni hrač
     * @param karty baliček karet
