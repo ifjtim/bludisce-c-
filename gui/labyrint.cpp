@@ -205,7 +205,7 @@ void Labyrint::render_info()
 
     rotace_button = new QPushButton;
     rotace_button->setText("Odeslat rotaci");
-    rotace_button->setGeometry(50,height+200,80,20);
+    rotace_button->setGeometry(50,height+200,110,20);
     proxy = this->scene->addWidget(rotace_button);
 
     this->lab_radky = radky;
