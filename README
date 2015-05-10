@@ -1,2 +1,24 @@
-sadas
+Projekt do předmětu ICP v roce 2015
+	Cílem bylo vytvoření jednoduché aplikace s grafickým rozhraním implementováno v C++/Qt.
+	Jde o verzi deskové hry Labyrint.
+	Hru lze hrát až ve čtyřech hráčích. Plochu labyrintu lze nastavit, nejmenší nastavení je 5x5 a nejvyšší 11x11.
+	Na ploše labyrintu se nacházejí předměty, které mají hráči za úkol sbírat.
+	Hra končí pokud některý hráč nasbírá určitý počet předmětů.
+	Hráči mohou využít funkci undo - vrátit krok zpět.
+	Hru je možné hrát jak v grafickém tak v konzolovém režimu.
+	Pro spuštění v grafickém režimu existuje příkaz: make run, pro konzolový režim: make run-cli.
 
+	Ovládání hry:
+		a - pohyb doleva
+		d - pohyp doprava
+		w - pohyb nahoru
+		s - pohyb dolu
+		e - změna hráče
+		left - rotace volného kamene doleva
+		right - rotace volného kamene doprava
+
+		myš - ovládání tlačítek + zadávání údajů
+
+Autoři:
+	xkonde03 Tomasz Konderla 
+	xcerve15 Pavel Červený
