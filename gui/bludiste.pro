@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = bludiste
+TARGET = bludiste2015
 TEMPLATE = app
 
 
@@ -16,14 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     gamesetup.cpp \
     labyrint.cpp \
-    deska.cpp \
-    myrect.cpp
+    myrect.cpp \
+    ../src/deska.cpp
 
 HEADERS  += mainwindow.h \
     gamesetup.h \
     labyrint.h \
-    deska.h \
-    myrect.h
+    myrect.h \
+    ../src/deska.h
 
 FORMS    += mainwindow.ui \
     gamesetup.ui \
@@ -32,14 +32,4 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     images.qrc
 
-DISTFILES += \
-    block.png \
-    cloud.png \
-    cog.png \
-    compass.png \
-    dribbble.png \
-    drop.png \
-    globe.png \
-    hashtag.png \
-    heart.png \
-    location.png
+

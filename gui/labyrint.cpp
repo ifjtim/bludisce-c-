@@ -1,38 +1,48 @@
+/**
+ * Labyrint 2015
+ *
+ * @file labyrint.cpp
+ * @brief Labyrint soubor se zdrojovym kodem.
+ * @author Tomasz Konderla xkonde03
+ * @author Pavel Červený xcerve15
+ */
+
 #include "labyrint.h"
 #include "ui_labyrint.h"
-#include <QDebug>
 #include "myrect.h"
+#include <QDebug>
+
 Labyrint::Labyrint(bool load, int width_height, int players, int cards, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Labyrint)
 {
     ui->setupUi(this);
-    this->width_height = width_height;
-    this->players = players;
-    this->cards = cards;
-    this->vec_score_players.resize(4);
+    this->width_height = width_height; // sirka plochy labyrintu
+    this->players = players; // pocet hracu
+    this->cards = cards; // pocet karet
     this->aktual_hrac = 0;
 
-    this->vec_items.resize(this->width_height*this->width_height*9+9);
+    this->vec_items.resize(this->width_height*this->width_height*9+9); // vektor pro ulozeni obrazku
 
     int height = (this->width_height+2)*3*20;
-    this->height = height;
-    int width = (this->width_height+2)*3*20;
+    this->height = height; // vyska hraci plochy
+    int width = (this->width_height+2)*3*20; // sirka hraci plochy
+
     scene = new QGraphicsScene(this);
-    MyRect *rect = new MyRect(this);
+    MyRect *rect = new MyRect(this); // prosto pro hraci plochu
     rect->setRect(0,0,width, height+300);
     scene->addItem(rect);
 
     rect->setFlag(QGraphicsItem::ItemIsFocusable);
 
-    load_pix();
+    load_pix(); // nahrani obrazku
 
-    if (!load){
+    if (!load){ // vytvoreni nove hry
     deska = new Deska(this->width_height);
     balicek = new Balicek(this->cards);
     vloz_kartu(deska, balicek);
 
-        for(int i=1;i<=this->players;i++){
+        for(int i=1;i<=this->players;i++){ // rozmisteni hracu
 
             if(i==1)
             {
@@ -63,9 +73,9 @@ Labyrint::Labyrint(bool load, int width_height, int players, int cards, QWidget 
             }
 
         }
-        paint_single(this->height);
+        paint_single(this->height); // vykresleni kamene navic
 
-        render_info();
+        render_info(); // vypsani informaci o hracich a ovladani tlacitka
 
     }
 
@@ -82,10 +92,8 @@ Labyrint::~Labyrint()
 
 void Labyrint::paint()
 {
-    QString test;
 
-
-    while (!vec_items.empty()){
+    while (!vec_items.empty()){ // vymazani vektoru pro ulozeni obrazku
         vec_items.pop_back();
     }
 
@@ -93,7 +101,7 @@ void Labyrint::paint()
     int counter = 0, counter2 = 0;
     int i = 0, j = 0, x = 0, y = 0;
     int plus1 = 0, plus2 = 0;
-    for (x = 0; x <this->width_height; x++){
+    for (x = 0; x <this->width_height; x++){ // zobrazeni hraci plochy
 
         for (y = 0; y <this->width_height; y++){
 
@@ -101,10 +109,10 @@ void Labyrint::paint()
 
             for (i = 0; i<3; i++){
                 for (j = 0; j<3; j++){
-                    typ_policko = deska->ziskej_policko(counter).vrat_policko(counter2);
-                    test += typ_policko;
+                    typ_policko = deska->ziskej_policko(counter).vrat_policko(counter2); // typ policka ve znakove podobe - policko = 1/9 celeho kamene
+
                     if (typ_policko == 'w'){
-                        Item = scene->addPixmap(wall);
+                        Item = scene->addPixmap(wall); // vykresleni policka na scenu
                     }
                     else if (typ_policko == '1'){
                         Item = scene->addPixmap(hrac1);
@@ -126,7 +134,7 @@ void Labyrint::paint()
                     }
 
                     Item->setOffset(50+20*j+plus1,50+20*i+plus2);
-                    vec_items.append(Item);
+                    vec_items.append(Item); // ulozeni policka do vektoru
 
                     counter2++;
                 }
@@ -163,7 +171,7 @@ void Labyrint::paint_single(int height)
         }
 
     }
-    rotate_left = new QGraphicsPixmapItem;
+    rotate_left = new QGraphicsPixmapItem; // obrazkove sipky pod vykreslenym poslednim kamenem
     rotate_right = new QGraphicsPixmapItem;
 
     rotate_left = scene->addPixmap(arrow_left);
@@ -177,8 +185,8 @@ void Labyrint::paint_single(int height)
 
 void Labyrint::render_info()
 {
-    QSpinBox *strana;
-    QSpinBox *radky;
+    QSpinBox *strana; // nastaveni cisla strany
+    QSpinBox *radky; // nastaveni cisla radku
 
     radky = new QSpinBox();
     radky->setMinimum(1);
@@ -189,7 +197,7 @@ void Labyrint::render_info()
     label_radky->setText("Radky: ");
     proxy = this->scene->addWidget(label_radky);
     radky->setGeometry(100,height+100,50,20);
-    proxy = this->scene->addWidget(radky);
+    proxy = this->scene->addWidget(radky); // zobrazeni prvku
 
     QLabel *label_sloupce = new QLabel;
     label_sloupce->setGeometry(50,height+150,50,20);
@@ -222,7 +230,6 @@ void Labyrint::render_info()
     quit_button->setGeometry(50,height+260,80,20);
     proxy = this->scene->addWidget(quit_button);
 
-    QGraphicsProxyWidget *proxy;
     QLabel *label_hrac1 = new QLabel;
     QLabel *hrac1_score = new QLabel;
     QLineEdit *hrac1_score_val = new QLineEdit;
@@ -248,31 +255,31 @@ void Labyrint::render_info()
     char typ;
     string test;
 
-        label_hrac1->setGeometry(180,height,70,20);
-        label_hrac1->setText("Hrac 1: ");
-        proxy = this->scene->addWidget(label_hrac1);
+    label_hrac1->setGeometry(180,height,70,20);
+    label_hrac1->setText("Hrac 1: ");
+    proxy = this->scene->addWidget(label_hrac1);
 
-        hrac1_score->setGeometry(180,height+30,70,20);
-        hrac1_score->setText("Skore: ");
-        proxy = this->scene->addWidget(hrac1_score);
+    hrac1_score->setGeometry(180,height+30,70,20);
+    hrac1_score->setText("Skore: ");
+    proxy = this->scene->addWidget(hrac1_score);
 
-        hrac1_score_val->setGeometry(220,height+30,20,20);
-        hrac1_score_val->setDisabled(true);
-        hrac1_score_val->setCursor(Qt::ArrowCursor);
-        skore = this->hraci[0].vrat_skore();
-        score = QString::number(skore);
-        hrac1_score_val->setText(score);
-        proxy = this->scene->addWidget(hrac1_score_val);
+    hrac1_score_val->setGeometry(220,height+30,20,20);
+    hrac1_score_val->setDisabled(true); // skore nelze prepsat
+    hrac1_score_val->setCursor(Qt::ArrowCursor);
+    skore = this->hraci[0].vrat_skore(); // skore hrace
+    score = QString::number(skore);
+    hrac1_score_val->setText(score);
+    proxy = this->scene->addWidget(hrac1_score_val); // nastaveni skore hrace
 
-        hrac1_predmet->setGeometry(180,height+60,70,20);
-        hrac1_predmet->setText("Predmet: ");
-        proxy = this->scene->addWidget(hrac1_predmet);
+    hrac1_predmet->setGeometry(180,height+60,70,20);
+    hrac1_predmet->setText("Predmet: ");
+    proxy = this->scene->addWidget(hrac1_predmet);
 
-        test = (this->hraci[0].vrat_co());
-        typ = test[0];
-        choose_pic(typ);
-        Item->setOffset(230,height+60);
-        vec_items.append(Item);
+    test = (this->hraci[0].vrat_co()); // hledany predmet hrace
+    typ = test[0];
+    choose_pic(typ); // nahrani obrazku
+    Item->setOffset(230,height+60);
+    vec_items.append(Item); // ulozeni do vektoru
 /***************************************************************/
         label_hrac2->setGeometry(300,height,70,20);
         label_hrac2->setText("Hrac 2: ");
@@ -387,7 +394,7 @@ void Labyrint::render_info()
 
     }
 
-    connect(this->save_button, SIGNAL(clicked()),this, SLOT (on_save_button_clicked()));
+    connect(this->save_button, SIGNAL(clicked()),this, SLOT (on_save_button_clicked())); // spusteni funkci pri udalosti klinknuti na tlacitko
     connect(this->rotace_button, SIGNAL(clicked()),this, SLOT (on_rotace_button_clicked()));
     connect(this->quit_button, SIGNAL(clicked()),this, SLOT (on_quit_button_clicked()));
 }
@@ -473,7 +480,7 @@ void Labyrint::choose_pic(char typ_policko)
 
 void Labyrint::load_pix()
 {
-    int blockSize = 20;
+    int blockSize = 20; // velikost policka v px
     wall.load(":/images/wall.png");
     hall.load(":/images/hall.png");
     hrac1.load(":/images/hrac1.png");
@@ -514,7 +521,9 @@ void Labyrint::load_pix()
     arrow_left.load(":/images/arrow_left.png");
     arrow_right.load(":/images/arrow_right.png");
 
-    cloud = cloud.scaled(blockSize,blockSize);
+
+
+    cloud = cloud.scaled(blockSize,blockSize); // zmenseni obrazku podle predane velikosti
     cog = cog.scaled(blockSize,blockSize);
     compass = compass.scaled(blockSize,blockSize);
     dribbble = dribbble.scaled(blockSize,blockSize);
@@ -550,7 +559,7 @@ void Labyrint::load_pix()
 void Labyrint::on_rotace_button_clicked()
 {
 
-   this->hraci = otoc(this->deska, this->lab_strana->value(), this->lab_radky->value(), this->rotace, this->balicek, this->hraci);
+   this->hraci = otoc(this->deska, this->lab_strana->value(), this->lab_radky->value(), this->rotace, this->balicek, this->hraci); // prekresleni volneho kamene
    this->paint();
    this->paint_single(this->height);
 }
@@ -559,7 +568,7 @@ void Labyrint::on_save_button_clicked()
 {
 
     bool ok;
-        QInputDialog* inputDialog = new QInputDialog();
+        QInputDialog* inputDialog = new QInputDialog(); // dialogove okno pro nastaveni jmena pro ukladany soubor
         inputDialog->setOptions(QInputDialog::NoButtons);
 
         QString text =  inputDialog->getText(NULL ,"Ulozit hru",
@@ -569,7 +578,7 @@ void Labyrint::on_save_button_clicked()
 
          if (ok && !text.isEmpty())
          {
-            uloz_hru(this->deska, this->balicek, this->hraci, tex, this->aktual_hrac);
+            uloz_hru(this->deska, this->balicek, this->hraci, tex, this->aktual_hrac); // ulozeni hry pokud byl predan nazev
 
          }
          else {
@@ -580,6 +589,6 @@ void Labyrint::on_save_button_clicked()
 
 void Labyrint::on_quit_button_clicked()
 {
-    QApplication::quit();
+    QApplication::quit(); // ukonceni aplikace
 }
 
