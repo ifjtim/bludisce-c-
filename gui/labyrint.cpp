@@ -83,7 +83,7 @@ Labyrint::~Labyrint()
 void Labyrint::paint()
 {
     QString test;
-    //vec_items.clear();
+
 
     while (!vec_items.empty()){
         vec_items.pop_back();
@@ -139,8 +139,6 @@ void Labyrint::paint()
         plus2 += 65;
     }
 
-    //qDebug() << test;
-    //qDebug() << rotate_left->offset();
 }
 
 void Labyrint::paint_single(int height)
@@ -190,7 +188,7 @@ void Labyrint::render_info()
     label_radky->setGeometry(50,height+100,30,20);
     label_radky->setText("Radky: ");
     proxy = this->scene->addWidget(label_radky);
-    radky->setGeometry(100,height+100,30,20);
+    radky->setGeometry(100,height+100,50,20);
     proxy = this->scene->addWidget(radky);
 
     QLabel *label_sloupce = new QLabel;
@@ -202,7 +200,7 @@ void Labyrint::render_info()
     strana->setMinimum(1);
     strana->setMaximum(this->width_height-1);
     strana->setSingleStep(1);
-    strana->setGeometry(50+50,height+150,30,20);
+    strana->setGeometry(50+50,height+150,50,20);
     proxy = this->scene->addWidget(strana);
 
     rotace_button = new QPushButton;
@@ -566,7 +564,7 @@ void Labyrint::on_save_button_clicked()
 
         QString text =  inputDialog->getText(NULL ,"Ulozit hru",
                                               "Nazev:", QLineEdit::Normal,"", &ok);
-        qDebug() << text;
+        //qDebug() << text;
          string tex = text.toStdString();
 
          if (ok && !text.isEmpty())
